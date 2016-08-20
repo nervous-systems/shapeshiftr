@@ -6,6 +6,8 @@
             [kvlt.core :as kvlt]
             [promesa.core :refer [IPromise]]))
 
+(kvlt/quiet!)
+
 (defn responding [resp]
   ;; Writing asynchronous tests sucks. Doing this is less invasive than
   ;; depending on cats and making the project treat promises as monads.
@@ -77,3 +79,17 @@
     (is (= (resp :outgoing-type) :LTC))
     (is (= (resp :incoming-coin) #? (:clj 1.23M :cljs 1.23)))
     (is (= (resp :outgoing-coin) 3.21))))
+
+(deftest ^:integration marketinfo-live
+  (let [p    (shapeshiftr/shapeshift! :marketinfo)
+        cont (fn [resp]
+               (is (not-empty resp))
+               (let [entry (first resp)]
+                 (is (number? (entry :miner-fee)))
+                 (is (vector? (entry :pair)))))]
+    #? (:clj  (cont @p)
+        :cljs (cljs.test/async done
+                (promesa.core/then p
+                  (fn [resp]
+                    (cont resp)
+                    (done)))))))
