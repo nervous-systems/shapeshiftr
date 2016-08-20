@@ -14,13 +14,10 @@
             [lein-doo       "0.1.7-SNAPSHOT"]]
   :codox
   {:source-paths ["src"]
-   :metadata {:doc/format :markdown}
-   :html
-   {:transforms
-    ~(read-string (slurp "doc/assets/codox-transforms.edn"))}
-   :source-uri "https://github.com/nervous-systems/shapeshiftr/blob/master/{filepath}#L{line}"}
-  :auto {"codox" {:file-pattern #"\.(clj[cs]?|md)$"
-                  :paths ["doc" "src"]}}
+   :metadata     {:doc/format :markdown}
+   :html         {:transforms ~(read-string (slurp "doc/assets/codox-transforms.edn"))}
+   :source-uri   "https://github.com/nervous-systems/shapeshiftr/blob/master/{filepath}#L{line}"}
+  :auto {"codox" {:file-pattern #"\.(clj[cs]?|md)$" :paths ["doc" "src"]}}
   :cljsbuild {:builds
               [{:id "node-test"
                 :source-paths ["src" "test"]
