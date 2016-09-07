@@ -30,7 +30,7 @@
       (str l "_" r))))
 
 (defn number-like? [s]
-  (and (string? s) (re-find #"^-?\d+(?:\.\d+)?$" s)))
+  (and (string? s) (re-find #"^-?\d+(?:\.\d+)?(?:e\-?\d+)?$" s)))
 
 (defn currency-like? [v]
   (when (or (string? v) (keyword v))
@@ -54,6 +54,7 @@
                         (= k :status)     (csk/->kebab-case-keyword v)
                         (currency-key? k) (->currency v)
                         (number-like? v)  (*str->number* v)
+                        (= "NaN"      v)  nil
                         :else             v)])))
 
 (defn tidy-in [x]
