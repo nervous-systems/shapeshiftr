@@ -15,5 +15,4 @@ before_install:
   - sh -e /etc/init.d/xvfb start
   - wget https://raw.githubusercontent.com/technomancy/leiningen/stable/bin/lein && chmod +x lein
   - ./lein npm install
-  - ./lein test-server &
 script: ./lein test && ./lein doo node node-test once && ./lein doo chrome generic-test once && ./lein doo firefox generic-test once
